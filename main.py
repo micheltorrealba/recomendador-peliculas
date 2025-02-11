@@ -105,5 +105,5 @@ def get_director(nombre_director: str):
 # 📌 Mensaje de bienvenida
 @app.get("/")
 def read_root():
-    return {"mensaje": "API de consulta de películas en funcionamiento 🚀"}
+    return {"mensaje": "API de consulta de películas"}
 
