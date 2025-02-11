@@ -1,11 +1,18 @@
 from fastapi import FastAPI
 import pandas as pd
+import os
+from dotenv import load_dotenv
 
-# Cargar el dataset procesado
-dataset_path = "dataset_final_sin_peliculas_excesivamente_largas.csv"
+# Cargar variables de entorno
+load_dotenv("config/.env")
+
+# Obtener la ruta del dataset desde las variables de entorno
+dataset_path = os.getenv("DATASET_PATH", "data/dataset_final_sin_peliculas_excesivamente_largas.csv")
+
+# Cargar el dataset
 df = pd.read_csv(dataset_path, parse_dates=["release_date"])
 
-# Crear la aplicación FastAPI
+# Iniciar FastAPI
 app = FastAPI()
 
 # 📌 1️⃣ Endpoint: Cantidad de filmaciones en un mes

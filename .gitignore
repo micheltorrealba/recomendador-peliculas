@@ -1,2 +1,7 @@
 credits.csv
 movies_dataset.csv
+venv/
+__pycache__/
+.env
+*.log
+config/.env
