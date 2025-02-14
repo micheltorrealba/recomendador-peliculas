@@ -15,7 +15,7 @@ df = pd.read_csv(dataset_path, parse_dates=["release_date"])
 # Iniciar FastAPI
 app = FastAPI()
 
-# 📌 1️⃣ Endpoint: Cantidad de filmaciones en un mes
+#Primer Endpoint: Cantidad de filmaciones en un mes
 @app.get("/cantidad_filmaciones_mes/{mes}")
 def cantidad_filmaciones_mes(mes: str):
     meses_dict = {
@@ -31,7 +31,7 @@ def cantidad_filmaciones_mes(mes: str):
     else:
         return {"error": "Mes inválido. Usa un mes en español."}
 
-# 📌 2️⃣ Endpoint: Cantidad de filmaciones en un día
+#Segundo Endpoint: Cantidad de filmaciones en un día
 @app.get("/cantidad_filmaciones_dia/{dia}")
 def cantidad_filmaciones_dia(dia: str):
     dias_dict = {
@@ -46,7 +46,7 @@ def cantidad_filmaciones_dia(dia: str):
     else:
         return {"error": "Día inválido. Usa un día en español."}
 
-# 📌 3️⃣ Endpoint: Obtener score de una película
+#Tercer Endpoint: Obtener score de una película
 @app.get("/score_titulo/{titulo}")
 def score_titulo(titulo: str):
     film = df[df["title"].str.lower() == titulo.lower()]
@@ -59,7 +59,7 @@ def score_titulo(titulo: str):
     else:
         return {"error": "Película no encontrada."}
 
-# 📌 4️⃣ Endpoint: Obtener votos de una película
+#Cuarto Endpoint: Obtener votos de una película
 @app.get("/votos_titulo/{titulo}")
 def votos_titulo(titulo: str):
     film = df[df["title"].str.lower() == titulo.lower()]
@@ -77,7 +77,7 @@ def votos_titulo(titulo: str):
     else:
         return {"error": "Película no encontrada."}
 
-# 📌 5️⃣ Endpoint: Información sobre un actor
+#Quinto Endpoint: Información sobre un actor
 @app.get("/get_actor/{nombre_actor}")
 def get_actor(nombre_actor: str):
     actor_films = df[df["actores"].str.contains(nombre_actor, na=False, case=False)]
@@ -94,7 +94,7 @@ def get_actor(nombre_actor: str):
     else:
         return {"error": "Actor no encontrado."}
 
-# 📌 6️⃣ Endpoint: Información sobre un director
+#Sexto Endpoint: Información sobre un director
 @app.get("/get_director/{nombre_director}")
 def get_director(nombre_director: str):
     director_films = df[df["director"].str.contains(nombre_director, na=False, case=False)]
@@ -109,7 +109,7 @@ def get_director(nombre_director: str):
     else:
         return {"error": "Director no encontrado."}
 
-# 📌 Mensaje de bienvenida
+#Mensaje de bienvenida
 @app.get("/")
 def read_root():
     return {"mensaje": "API de consulta de películas"}
