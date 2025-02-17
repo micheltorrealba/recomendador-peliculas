@@ -2,12 +2,15 @@ from fastapi import FastAPI
 import pandas as pd
 import os
 from dotenv import load_dotenv
+from recommender import recomendar_peliculas
+
 
 # Cargar variables de entorno
 load_dotenv("config/.env")
 
 # Obtener la ruta del dataset desde las variables de entorno
-dataset_path = os.getenv("DATASET_PATH", "data/dataset_final_sin_peliculas_excesivamente_largas.csv")
+dataset_path = os.getenv("DATASET_PATH", "../data/dataset_final_sin_peliculas_excesivamente_largas.csv")
+
 
 # Cargar el dataset
 df = pd.read_csv(dataset_path, parse_dates=["release_date"])
@@ -15,7 +18,11 @@ df = pd.read_csv(dataset_path, parse_dates=["release_date"])
 # Iniciar FastAPI
 app = FastAPI()
 
+<<<<<<< HEAD
 #Primer Endpoint: Cantidad de filmaciones en un mes
+=======
+#Endpoint: Cantidad de filmaciones en un mes
+>>>>>>> c4afa1d (Primera versión de la API de recomendación)
 @app.get("/cantidad_filmaciones_mes/{mes}")
 def cantidad_filmaciones_mes(mes: str):
     meses_dict = {
@@ -31,7 +38,11 @@ def cantidad_filmaciones_mes(mes: str):
     else:
         return {"error": "Mes inválido. Usa un mes en español."}
 
+<<<<<<< HEAD
 #Segundo Endpoint: Cantidad de filmaciones en un día
+=======
+#Endpoint: Cantidad de filmaciones en un día
+>>>>>>> c4afa1d (Primera versión de la API de recomendación)
 @app.get("/cantidad_filmaciones_dia/{dia}")
 def cantidad_filmaciones_dia(dia: str):
     dias_dict = {
@@ -46,7 +57,11 @@ def cantidad_filmaciones_dia(dia: str):
     else:
         return {"error": "Día inválido. Usa un día en español."}
 
+<<<<<<< HEAD
 #Tercer Endpoint: Obtener score de una película
+=======
+#Endpoint: Obtener score de una película
+>>>>>>> c4afa1d (Primera versión de la API de recomendación)
 @app.get("/score_titulo/{titulo}")
 def score_titulo(titulo: str):
     film = df[df["title"].str.lower() == titulo.lower()]
@@ -59,7 +74,11 @@ def score_titulo(titulo: str):
     else:
         return {"error": "Película no encontrada."}
 
+<<<<<<< HEAD
 #Cuarto Endpoint: Obtener votos de una película
+=======
+#Endpoint: Obtener votos de una película
+>>>>>>> c4afa1d (Primera versión de la API de recomendación)
 @app.get("/votos_titulo/{titulo}")
 def votos_titulo(titulo: str):
     film = df[df["title"].str.lower() == titulo.lower()]
@@ -77,7 +96,11 @@ def votos_titulo(titulo: str):
     else:
         return {"error": "Película no encontrada."}
 
+<<<<<<< HEAD
 #Quinto Endpoint: Información sobre un actor
+=======
+#Endpoint: Información sobre un actor
+>>>>>>> c4afa1d (Primera versión de la API de recomendación)
 @app.get("/get_actor/{nombre_actor}")
 def get_actor(nombre_actor: str):
     actor_films = df[df["actores"].str.contains(nombre_actor, na=False, case=False)]
@@ -94,7 +117,11 @@ def get_actor(nombre_actor: str):
     else:
         return {"error": "Actor no encontrado."}
 
+<<<<<<< HEAD
 #Sexto Endpoint: Información sobre un director
+=======
+#Endpoint: Información sobre un director
+>>>>>>> c4afa1d (Primera versión de la API de recomendación)
 @app.get("/get_director/{nombre_director}")
 def get_director(nombre_director: str):
     director_films = df[df["director"].str.contains(nombre_director, na=False, case=False)]
@@ -114,3 +141,12 @@ def get_director(nombre_director: str):
 def read_root():
     return {"mensaje": "API de consulta de películas"}
 
+# Endpoint de recomendación con respuesta mejorada
+@app.get("/recomendacion/{titulo}")
+def recomendacion(titulo: str):
+    return {"mensaje": recomendar_peliculas(titulo)}
+
+# Agregar ejecución de FastAPI con Uvicorn 🔥
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8000)
