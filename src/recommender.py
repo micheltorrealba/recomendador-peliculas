@@ -3,7 +3,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Cargar el dataset
-df = pd.read_csv("../data/dataset_final_sin_peliculas_excesivamente_largas.csv")
+df = pd.read_csv("src/data/dataset_final_sin_peliculas_excesivamente_largas.csv")
 
 # Preparar los datos
 # Asegurar que las columnas clave sean strings y estén en minúsculas sin espacios adicionales
