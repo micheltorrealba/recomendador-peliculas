@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import pandas as pd
 import os
 from dotenv import load_dotenv
-from recommender import recomendar_peliculas
+from src.recommender import recomendar_peliculas
 
 
 # Cargar variables de entorno
