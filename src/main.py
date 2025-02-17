@@ -9,7 +9,7 @@ from src.recommender import recomendar_peliculas
 load_dotenv("config/.env")
 
 # Obtener la ruta del dataset desde las variables de entorno
-dataset_path = os.getenv("DATASET_PATH", "../data/dataset_final_sin_peliculas_excesivamente_largas.csv")
+dataset_path = os.getenv("DATASET_PATH", "src/data/dataset_final_sin_peliculas_excesivamente_largas.csv")
 
 
 # Cargar el dataset
