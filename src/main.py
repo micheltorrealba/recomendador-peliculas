@@ -71,13 +71,13 @@ def score_titulo(titulo: str):
 def votos_titulo(titulo: str):
     film = df[df["title"].str.lower() == titulo.lower()]
     if not film.empty:
-        votos = int(film["vote_count"].values[0])  # ✅ Usamos vote_count
+        votos = int(film["vote_count"].values[0])  
         if votos >= 2000:
             return {
                 "titulo": titulo,
                 "año": int(film["release_year"].values[0]),
                 "cantidad_votos": votos,
-                "promedio_votos": float(film["vote_average"].values[0])  # Esto sí es vote_average
+                "promedio_votos": float(film["vote_average"].values[0])
             }
         else:
             return {"mensaje": "La película no tiene suficientes votos (mínimo 2000)."}
@@ -117,19 +117,19 @@ def get_director(nombre_director: str):
         }
     else:
         return {"error": "Director no encontrado."}
-
-# Endpoint de recomendación
-@app.get("/recomendacion/{titulo}")
-def obtener_recomendacion(titulo: str):
-    peliculas_recomendadas = recomendacion(titulo)  # ✅ Llamamos correctamente la función
-    return peliculas_recomendadas  # 🔥 Devolvemos la respuesta en JSON correctamente
-
+    
 # Mensaje de bienvenida
 @app.get("/")
 def read_root():
     return {"mensaje": "API de consulta de películas"}
 
-# Agregar ejecución de FastAPI con Uvicorn
+# Endpoint de recomendación
+@app.get("/recomendacion/{titulo}")
+def obtener_recomendacion(titulo: str):
+    return recomendacion(titulo)
+
+# Asegurar que Render use el puerto correcto
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    port = int(os.environ.get("PORT", 10000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
