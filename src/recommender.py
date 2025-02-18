@@ -1,9 +1,13 @@
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import os
 
-# Cargar el dataset
-df = pd.read_csv("src/data/dataset_final_sin_peliculas_excesivamente_largas.csv")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+dataset_path = os.path.join(BASE_DIR, "data/dataset_final_sin_peliculas_excesivamente_largas.csv")
+
+# Cargar dataset
+df = pd.read_csv(dataset_path)
 
 # Preparar los datos
 # Asegurar que las columnas clave sean strings y estén en minúsculas sin espacios adicionales
