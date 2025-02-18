@@ -126,7 +126,11 @@ def read_root():
 # Endpoint de recomendación con respuesta mejorada
 @app.get("/recomendacion/{titulo}")
 def recomendacion(titulo: str):
-    return {"mensaje": recomendar_peliculas(titulo)}
+    peliculas_recomendadas = recomendar_peliculas(titulo)
+    return {
+        "mensaje": f"Te recomendamos las siguientes películas similares a {titulo}:",
+        "recomendaciones": peliculas_recomendadas  # 🔥 Devuelve una lista JSON
+    }
 
 # Agregar ejecución de FastAPI con Uvicorn 🔥
 if __name__ == "__main__":
