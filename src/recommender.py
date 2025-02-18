@@ -17,7 +17,7 @@ df = pd.read_csv(dataset_path)
 # Ponderamos los atributos según la importancia requerida
 df["features"] = (df["genres"].fillna('') * 3) + " " + \
                  (df["actores"].fillna('') * 2) + " " + \
-                 df["director"].fillna('')
+                 (df["director"].fillna('') * 2)
 
 # Vectorización con TF-IDF
 tfidf = TfidfVectorizer(stop_words="english")
