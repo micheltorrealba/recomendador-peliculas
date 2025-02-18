@@ -1,53 +1,49 @@
+from fastapi import FastAPI
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-
 import os
+from dotenv import load_dotenv
 
+# Cargar variables de entorno
+load_dotenv("config/.env")
+
+# 🔹 Obtener la ruta absoluta del dataset
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 dataset_path = os.path.join(BASE_DIR, "../data/dataset_final_sin_peliculas_excesivamente_largas.csv")
 
+# Verificación de existencia del archivo
+if not os.path.exists(dataset_path):
+    raise FileNotFoundError(f"El dataset no se encontró en la ruta: {dataset_path}")
+
+# 🔹 Cargar el dataset
 df = pd.read_csv(dataset_path)
 
-# Preparar los datos
-# Asegurar que las columnas clave sean strings y estén en minúsculas sin espacios adicionales
-for col in ["genres", "actores", "director", "companias_produccion"]:
-    df[col] = df[col].astype(str).str.lower().str.replace(" ", "")
+# Verificación de existencia de la columna "combined_features"
+if "combined_features" not in df.columns:
+    raise ValueError("La columna 'combined_features' no está en el dataset. Verifica su creación en el preprocesamiento.")
 
-# Ajustar la combinación de características con pesos
-df["combined_features"] = (df["genres"] + " " + df["genres"] + " " + df["genres"] + " " + 
-                           df["actores"] + " " + df["actores"] + " " + 
-                           df["director"] + " " + df["director"] + " " + 
-                           df["companias_produccion"] + " " + df["companias_produccion"])
-
-# Vectorización con TF-IDF
-vectorizer = TfidfVectorizer(stop_words="english")
-tfidf_matrix = vectorizer.fit_transform(df["combined_features"])
-
-# Calcular la matriz de similitud del coseno
+# Preparar TF-IDF para el modelo de recomendación
+tfidf = TfidfVectorizer(stop_words="english")
+tfidf_matrix = tfidf.fit_transform(df["combined_features"])  # ✅ Nos aseguramos de que esta columna exista
 cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
 
-# Función de recomendación mejorada
-def recomendar_peliculas(titulo):
-    # Verificar si la película existe
-    if titulo.lower() not in df["title"].str.lower().values:
-        return "Error: Película no encontrada en el dataset"
+# Crear un índice de películas
+indices = pd.Series(df.index, index=df["title"]).drop_duplicates()
 
-    # Obtener índice de la película
-    idx = df[df["title"].str.lower() == titulo.lower()].index[0]
-
-    # Obtener lista de similitud
+# **Función para devolver recomendaciones en JSON**
+def recomendacion(titulo: str):
+    if titulo not in indices:
+        return {"error": "Película no encontrada."}
+    
+    idx = indices[titulo]
     sim_scores = list(enumerate(cosine_sim[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    sim_scores = sim_scores[1:6]  # Obtener las 5 películas más similares
+    movie_indices = [i[0] for i in sim_scores]
+    recommended_movies = df["title"].iloc[movie_indices].tolist()
 
-    # Ordenar por mayor similitud y tomar las 5 más cercanas (sin contar la misma película)
-    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)[1:6]
-
-    # Obtener los títulos recomendados
-    recomendadas = df.iloc[[i[0] for i in sim_scores]]["title"].tolist()
-
-    # Formato de la respuesta
-    respuesta = f"Te recomendamos las siguientes películas similares a {titulo}:\n"
-    respuesta += "\n".join(recomendadas)
-
-    return respuesta
-
+    return {
+        "mensaje": f"Te recomendamos las siguientes películas similares a {titulo}:",
+        "recomendaciones": recommended_movies  # Devuelve una lista en JSON
+    }

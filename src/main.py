@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import pandas as pd
 import os
 from dotenv import load_dotenv
-from src.recommender import recomendar_peliculas
+from src.recommender import recomendacion
 
 
 # Cargar variables de entorno
@@ -118,21 +118,18 @@ def get_director(nombre_director: str):
     else:
         return {"error": "Director no encontrado."}
 
-#Mensaje de bienvenida
+# Endpoint de recomendación
+@app.get("/recomendacion/{titulo}")
+def obtener_recomendacion(titulo: str):
+    peliculas_recomendadas = recomendacion(titulo)  # ✅ Llamamos correctamente la función
+    return peliculas_recomendadas  # 🔥 Devolvemos la respuesta en JSON correctamente
+
+# Mensaje de bienvenida
 @app.get("/")
 def read_root():
     return {"mensaje": "API de consulta de películas"}
 
-# Endpoint de recomendación con respuesta mejorada
-@app.get("/recomendacion/{titulo}")
-def recomendacion(titulo: str):
-    peliculas_recomendadas = recomendar_peliculas(titulo)
-    return {
-        "mensaje": f"Te recomendamos las siguientes películas similares a {titulo}:",
-        "recomendaciones": peliculas_recomendadas  # 🔥 Devuelve una lista JSON
-    }
-
-# Agregar ejecución de FastAPI con Uvicorn 🔥
+# Agregar ejecución de FastAPI con Uvicorn
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
