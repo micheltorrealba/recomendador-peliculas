@@ -92,6 +92,7 @@ Render        | Despliegue de la API en la nube.|
 📎 [EDA.ipynb](https://github.com/micheltorrealba/recomendador-peliculas/blob/main/notebooks/EDA.ipynb)
 
 ⚠ **Nota:** Para ejecutar el EDA en local, asegúrate de que el dataset esté en la misma carpeta que el notebook. También puedes descargarlo desde aquí:  
+
 📎 [Dataset para EDA](https://github.com/micheltorrealba/recomendador-peliculas/blob/main/notebooks/dataset_final_sin_peliculas_excesivamente_largas.csv)
 
 ## 📌 Fase 4: Creación de la API con FastAPI
