@@ -79,12 +79,20 @@ Render        | Despliegue de la API en la nube.|
 - Se calcularon distribuciones de variables clave (budget, revenue, popularity, vote_average, vote_count).
 - Se identificaron outliers (valores extremos en presupuesto, ingresos, etc.).
 - Se exploraron correlaciones entre variables.
+- Identificación de los **Top 10 géneros** más frecuentes en el dataset.
 
 ### 8️⃣ Análisis visual
 
 - Histogramas y boxplots para visualizar distribuciones.
 - Matrices de correlación para analizar relaciones entre variables.
 - Nubes de palabras para analizar tendencias en los títulos de películas.
+
+### Puedes ver el **notebook completo del EDA** en este enlace:
+
+📎 [EDA.ipynb](https://github.com/micheltorrealba/recomendador-peliculas/blob/main/notebooks/EDA.ipynb)
+
+⚠ **Nota:** Para ejecutar el EDA en local, asegúrate de que el dataset esté en la misma carpeta que el notebook. También puedes descargarlo desde aquí:  
+📎 [Dataset para EDA](https://github.com/micheltorrealba/recomendador-peliculas/blob/main/notebooks/dataset_final_sin_peliculas_excesivamente_largas.csv)
 
 ## 📌 Fase 4: Creación de la API con FastAPI
 
